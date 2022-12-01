@@ -1,7 +1,7 @@
 const modalProduct = document.querySelector('.modal_product');
 const cataloglist = document.querySelector('.catalog__list');
 
-const product = {
+const burgerMax = {
     title: 'Бургер Макс',
     price: 10000,
     weight: 5000,
@@ -17,30 +17,65 @@ const product = {
     ]
 }
 
-const modalProductTitle = document.querySelector('.modal-product__title');
-const modalProductImage = document.querySelector('.modal-product__image');
-const modalProductDescription = document.querySelector('.modal-product__description');
-const ingredientsList = document.querySelector('.ingredients__list');
-const ingredientsCalories = document.querySelector('.ingredients__calories');
-const modalProductPriceCount = document.querySelector('.modal-product__price-count');
+const openModal = (product) => {
+    const modalProductTitle = document.querySelector('.modal-product__title');
+    const modalProductImage = document.querySelector('.modal-product__image');
+    const modalProductDescription = document.querySelector('.modal-product__description');
+    const ingredientsList = document.querySelector('.ingredients__list');
+    const ingredientsCalories = document.querySelector('.ingredients__calories');
+    const modalProductPriceCount = document.querySelector('.modal-product__price-count');
 
-modalProductTitle.textContent = product.title;
-modalProductImage.src = product.image;
+    // заголовок продукта
+    modalProductTitle.textContent = product.title;
+    // картинка продукта
+    modalProductImage.src = product.image;
 
-ingredientsList.textContent = '';
+    // ингредиенты продукта
+    ingredientsList.textContent = '';
 
-const ingredientsListItems = product.ingredients.map((item) => {
+    const ingredientsListItems = product.ingredients.map((item) => {
+        const li = document.createElement('li');
+        li.classList.add('.ingredients__item');
+        li.textContent = item;
+        return li;
+    });
+
+    ingredientsList.append(...ingredientsListItems);
+
+    // описание продукта
+    modalProductDescription.textContent = product.description;
+
+    // калории продукта
+    ingredientsCalories.textContent = `${product.weight} г, ккал ${product.calories}`;
+
+    // цена продукта
+    modalProductPriceCount.textContent = product.price;
+
+    modalProduct.classList.add('modal_open');
+};
+
+const createCardProduct = (product) => {
     const li = document.createElement('li');
-    li.classList.add('.ingredients__item');
-    li.textContent = item;
+    li.classList.add('catalog__item');
+
+    li.innerHTML = `
+        <article class="product">
+            <img class="product__image" src="${product.image}" alt="Мясная бомба">
+
+            <p class="product__price">689<span class="currency">₽</span></p>
+
+            <h3 class="product__title">
+                <button class="product__detail">Мясная бомба</button>
+            </h3>
+
+            <p class="product__weight">520г</p>
+
+            <button class="product__add">Добавить</button>
+        </article>
+    `;
+
     return li;
-});
-
-ingredientsList.append(...ingredientsListItems);
-
-//modalProductDescription
-//modalProductCalories
-//modalProductPriceCount
+};
 
 // открытие модального окна
 cataloglist.addEventListener('click', (event) => {
@@ -48,7 +83,7 @@ cataloglist.addEventListener('click', (event) => {
 
     if(target.closest('.product__detail') 
     || target.closest('.product__image')) {
-    modalProduct.classList.add('modal_open');
+        openModal(burgerMax);
     }
 });
 
