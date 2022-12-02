@@ -1,5 +1,9 @@
-const modalProduct = document.querySelector('.modal_product');
-const cataloglist = document.querySelector('.catalog__list');
+import { 
+    modalProduct, 
+    cataloglist, 
+} from "./elements.js";
+import { createCardProduct } from "./createCardProduct.js";
+import { openModal } from "./openModal.js";
 
 const burgerMax = {
     title: 'Бургер Макс',
@@ -17,65 +21,18 @@ const burgerMax = {
     ]
 }
 
-const openModal = (product) => {
-    const modalProductTitle = document.querySelector('.modal-product__title');
-    const modalProductImage = document.querySelector('.modal-product__image');
-    const modalProductDescription = document.querySelector('.modal-product__description');
-    const ingredientsList = document.querySelector('.ingredients__list');
-    const ingredientsCalories = document.querySelector('.ingredients__calories');
-    const modalProductPriceCount = document.querySelector('.modal-product__price-count');
+cataloglist.textContent = "";
 
-    // заголовок продукта
-    modalProductTitle.textContent = product.title;
-    // картинка продукта
-    modalProductImage.src = product.image;
+// отрисовка продукта на сайте
+const card = [
+    createCardProduct(burgerMax),
+    createCardProduct(burgerMax),
+    createCardProduct(burgerMax),
+    createCardProduct(burgerMax),
+    createCardProduct(burgerMax)
+]
 
-    // ингредиенты продукта
-    ingredientsList.textContent = '';
-
-    const ingredientsListItems = product.ingredients.map((item) => {
-        const li = document.createElement('li');
-        li.classList.add('.ingredients__item');
-        li.textContent = item;
-        return li;
-    });
-
-    ingredientsList.append(...ingredientsListItems);
-
-    // описание продукта
-    modalProductDescription.textContent = product.description;
-
-    // калории продукта
-    ingredientsCalories.textContent = `${product.weight} г, ккал ${product.calories}`;
-
-    // цена продукта
-    modalProductPriceCount.textContent = product.price;
-
-    modalProduct.classList.add('modal_open');
-};
-
-const createCardProduct = (product) => {
-    const li = document.createElement('li');
-    li.classList.add('catalog__item');
-
-    li.innerHTML = `
-        <article class="product">
-            <img class="product__image" src="${product.image}" alt="Мясная бомба">
-
-            <p class="product__price">689<span class="currency">₽</span></p>
-
-            <h3 class="product__title">
-                <button class="product__detail">Мясная бомба</button>
-            </h3>
-
-            <p class="product__weight">520г</p>
-
-            <button class="product__add">Добавить</button>
-        </article>
-    `;
-
-    return li;
-};
+cataloglist.append(...card);
 
 // открытие модального окна
 cataloglist.addEventListener('click', (event) => {
