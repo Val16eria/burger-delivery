@@ -4,6 +4,8 @@ import {
 } from "./elements.js";
 import { createCardProduct } from "./createCardProduct.js";
 import { openModal } from "./openModal.js";
+import { renderListProduct } from "./renderListProduct.js";
+import { navigationListController } from "./navigationListController.js";
 
 const burgerMax = {
     title: 'Бургер Макс',
@@ -20,19 +22,6 @@ const burgerMax = {
         'Cоус чилли'
     ]
 }
-
-cataloglist.textContent = "";
-
-// отрисовка продукта на сайте
-const card = [
-    createCardProduct(burgerMax),
-    createCardProduct(burgerMax),
-    createCardProduct(burgerMax),
-    createCardProduct(burgerMax),
-    createCardProduct(burgerMax)
-]
-
-cataloglist.append(...card);
 
 // открытие модального окна
 cataloglist.addEventListener('click', (event) => {
@@ -53,3 +42,10 @@ modalProduct.addEventListener('click', (event) => {
     modalProduct.classList.remove('modal_open');
     }
 });
+
+const init = () => {
+    renderListProduct();
+    navigationListController();
+};
+
+init();

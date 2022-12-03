@@ -1,10 +1,12 @@
+import { API_URL } from "./const.js";
+
 export const createCardProduct = (product) => {
     const li = document.createElement('li');
     li.classList.add('catalog__item');
 
     li.innerHTML = `
         <article class="product">
-            <img class="product__image" src="${product.image}" alt="${product.tittle}">
+            <img class="product__image" src="${API_URL}/${product.image}" alt="${product.tittle}">
 
             <p class="product__price">${product.price}<span class="currency">₽</span></p>
 
