@@ -1,3 +1,4 @@
+import { API_URL, PREFIX_PRODUCT } from "./const.js";
 import { 
     ingredientsList,
     modalProductTitle,
@@ -7,12 +8,14 @@ import {
     modalProductPriceCount,
     modalProduct
 } from "./elements.js";
+import { getData } from "./getData.js";
 
-export const openModal = (product) => {
+export const openModal = async (id) => {
+    const product = await getData(`${API_URL}${PREFIX_PRODUCT}/${id}`)
     // заголовок продукта
     modalProductTitle.textContent = product.title;
     // картинка продукта
-    modalProductImage.src = product.image;
+    modalProductImage.src = `${API_URL}/${product.image}`;
 
     // ингредиенты продукта
     ingredientsList.textContent = '';
