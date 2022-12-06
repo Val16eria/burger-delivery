@@ -6,7 +6,8 @@ import {
     modalProductDescription,
     ingredientsCalories, 
     modalProductPriceCount,
-    modalProduct
+    modalProduct,
+    modalProductBtn
 } from "./elements.js";
 import { getData } from "./getData.js";
 
@@ -37,6 +38,8 @@ export const openModal = async (id) => {
 
     // цена продукта
     modalProductPriceCount.textContent = product.price;
+
+    modalProductBtn.dataset.idProduct = product.id;
 
     modalProduct.classList.add('modal_open');
 };
