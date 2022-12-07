@@ -6,7 +6,6 @@ import { openModal } from "./openModal.js";
 import { renderListProduct } from "./renderListProduct.js";
 import { navigationListController } from "./navigationListController.js";
 import { cartInit } from "./cart.js";
-import { renderCartList } from "./renderCartList.js";
 
 // открытие модального окна
 catalogList.addEventListener('click', (event) => {
