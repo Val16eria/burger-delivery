@@ -1,4 +1,4 @@
-import { catalogList, countAmount, modalProductBtn, orderCount, orderList } from "./elements.js";
+import { catalogList, countAmount, modalProductBtn, orderCount, orderList, orderTotalAmount } from "./elements.js";
 import { getData } from "./getData.js";
 import { API_URL, PREFIX_PRODUCT } from "./const.js";
 
@@ -13,8 +13,11 @@ const getCart = () => {
 
 const renderCartList = async () => {
     const cartList = getCart();
+
     const allIdProduct = cartList.map(item => item.id);
-    const data = await getData(`${API_URL}${PREFIX_PRODUCT}?list=${allIdProduct}`);
+    const data = cartList.length
+        ? await getData(`${API_URL}${PREFIX_PRODUCT}?list=${allIdProduct}`)
+        : [];
 
     const countProduct  = cartList.reduce((acc, item) => acc + item.count, 0);
     orderCount.textContent = countProduct;
@@ -38,17 +41,22 @@ const renderCartList = async () => {
             </div>
 
             <div class="order__product-count count">
-                <button class="count__minus">-</button>
+                <button class="count__minus" data-id-product=${product.id}>-</button>
 
                 <p class="count__amount">${product.count}</p>
 
-                <button class="count__plus">+</button>
+                <button class="count__plus" data-id-product=${product.id}>+</button>
             </div>
         `;
         return li;
     });
     orderList.textContent = '';
     orderList.append(...cartItems);
+
+    orderTotalAmount.textContent = data.reduce((acc, item) => {
+        const product = cartList.find((cartItems => cartItems.id === item.id));
+        return acc + item.price *product.count;
+    }, 0);
 };
 
 
