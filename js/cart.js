@@ -1,4 +1,13 @@
-import { catalogList, countAmount, modalProductBtn, orderCount, orderList, orderTotalAmount } from "./elements.js";
+import { catalogList, 
+    countAmount,
+    modalProductBtn, 
+    order, 
+    orderCount, orderList, 
+    orderSubmit, 
+    orderTotalAmount, 
+    orderWrapTitle,
+    modalDelivery
+} from "./elements.js";
 import { getData } from "./getData.js";
 import { API_URL, PREFIX_PRODUCT } from "./const.js";
 
@@ -13,6 +22,8 @@ const getCart = () => {
 
 const renderCartList = async () => {
     const cartList = getCart();
+
+    orderSubmit.disabled = !cartList.length;
 
     const allIdProduct = cartList.map(item => item.id);
     const data = cartList.length
@@ -55,7 +66,7 @@ const renderCartList = async () => {
 
     orderTotalAmount.textContent = data.reduce((acc, item) => {
         const product = cartList.find((cartItems => cartItems.id === item.id));
-        return acc + item.price *product.count;
+        return acc + item.price * product.count;
     }, 0);
 };
 
@@ -79,7 +90,15 @@ const addCart = (id, count = 1) => {
 };
 
 const removeCart = (id) => {
+    const cartList = getCart();
+    const productIndex = cartList.findIndex((item) => item.id === id);
+    cartList[productIndex].count -= 1;
 
+    if (cartList[productIndex].count === 0) {
+        cartList.splice(productIndex, 1);
+    }
+
+    updateCartList(cartList);
 };
 
 const cartController = () => {
@@ -92,7 +111,34 @@ const cartController = () => {
         addCart(
             modalProductBtn.dataset.idProduct,
             parseInt(countAmount.textContent)
-        );
+        )
+    });
+
+    orderList.addEventListener('click', ({target}) => {
+        const targetPlus = target.closest('.count__plus');
+        const targetMinus = target.closest('.count__minus');
+
+        if (targetPlus) {
+            addCart(targetPlus.dataset.idProduct);
+        }
+
+        if (targetMinus) {
+            removeCart(targetMinus.dataset.idProduct);
+        }
+    });
+
+    orderWrapTitle.addEventListener('click', () => {
+        order.classList.toggle('order_open');
+    });
+
+    orderSubmit.addEventListener('click', () => {
+        modalDelivery.classList.add('modal_open');
+    });
+
+    modalDelivery.addEventListener('click', ({target}) => {
+        if (target.closest('.modal__close') || modalDelivery === target) {
+            modalDelivery.classList.remove('modal_open');
+        }
     })
 };
 
