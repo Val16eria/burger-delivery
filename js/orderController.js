@@ -24,27 +24,25 @@ export const orderController = (getCart) => {
 
         const formData = new FormData(modalDeliveryForm);
         const data = Object.fromEntries(formData);
-        data.order = getCart(getCart);
+        data.order = getCart();
 
         fetch('https://reqres.in/api/users', {
             method: 'post',
             body: JSON.stringify(data),  
         }).then(response => response.json())
-        .then(data => {
+        .then(response => {
             clearCart();
 
             modalDeliveryContainer.innerHTML =  `
                 <h2>Спасибо за заказ!</h2>
-                <h3>Ваш номер заказа ${data.id}</h3>
-                <p>В ближайшее время с вами свяжется наш менеджер ${data.manager}</p>
+                <h3>Ваш номер заказа ${response.id}</h3>
+                <p>В ближайшее время с вами свяжется наш менеджер ${response.manager}</p>
                 <p>Ваш заказ:</p>
             `;
 
             const ul = document.createElement('ul');
             data.order.forEach(item => {
-                ul.insertAdjacentHTML('beforeend', `
-                    <li>${item.title}</li>
-                `);
+                ul.insertAdjacentHTML('beforeend', `<li>${item.title}</li>`);
             });
 
             modalDeliveryContainer.insertAdjacentElement('beforeend', ul);

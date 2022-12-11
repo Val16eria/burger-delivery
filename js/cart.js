@@ -153,5 +153,5 @@ const cartController = () => {
 export const cartInit = () => {
     cartController();
     renderCartList();
-    orderController();
+    orderController(getCart);
 };
