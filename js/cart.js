@@ -1,8 +1,10 @@
-import { catalogList, 
+import { 
+    catalogList, 
     countAmount,
     modalProductBtn, 
     order, 
-    orderCount, orderList, 
+    orderCount, 
+    orderList, 
     orderSubmit, 
     orderTotalAmount, 
     orderWrapTitle,
@@ -10,6 +12,7 @@ import { catalogList,
 } from "./elements.js";
 import { getData } from "./getData.js";
 import { API_URL, PREFIX_PRODUCT } from "./const.js";
+import { orderController } from "./orderController.js";
 
 const getCart = () => {
     const cartList = localStorage.getItem('cart');
@@ -89,6 +92,11 @@ const addCart = (id, count = 1) => {
     updateCartList(cartList);
 };
 
+export const clearCart = () => {
+    localStorage.removeItem('cart');
+    renderCartList();
+};
+
 const removeCart = (id) => {
     const cartList = getCart();
     const productIndex = cartList.findIndex((item) => item.id === id);
@@ -145,4 +153,5 @@ const cartController = () => {
 export const cartInit = () => {
     cartController();
     renderCartList();
+    orderController();
 };
